@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BusHop — 3 Mockup Styles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===== NAV ===== */
+.nav {
+  display: flex;
+  gap: 8px;
+  padding: 14px 20px;
+  background: #18181B;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  align-items: center;
+  border-bottom: 1px solid #27272A;
+}
+.nav-title { font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; color: #fff; margin-right: auto; }
+.nav-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid #3F3F46;
+  background: transparent;
+  color: #A1A1AA;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: all .2s;
+}
+.nav-btn.active { background: #D4607A; border-color: #D4607A; color: #fff; font-weight: 600; }
+.nav-btn:hover:not(.active) { border-color: #71717A; color: #E4E4E7; }
+
+/* ===== SECTIONS ===== */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ===== SHARED UTILS ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+/* =========================================================
+   STYLE A — GLASSMORPHISM DARK (Night Fuji)
+   Nền tối xanh đêm, blur glass cards, sakura neon accent
+   ========================================================= */
+.style-a {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #0D1B2A 40%, #0F1923 100%);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #E2E8F0;
+  padding-bottom: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient blobs */
+.style-a::before {
+  content: '';
+  position: absolute;
+  top: -120px; left: -80px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(212,96,122,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.style-a::after {
+  content: '';
+  position: absolute;
+  bottom: 80px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(30,58,95,0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.a-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(12px);
+  position: relative; z-index: 1;
+}
+.a-logo { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.03em; }
+.a-logo span { color: #D4607A; }
+.a-lang {
+  margin-left: auto;
+  font-size: 12px;
+  color: #64748B;
+  background: rgba(255,255,255,0.06);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+}
+
+.a-hero {
+  padding: 28px 20px 8px;
+  position: relative; z-index: 1;
+}
+.a-hero-label { font-size: 12px; color: #D4607A; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.a-hero-title { font-size: 24px; font-weight: 700; color: #fff; line-height: 1.2; letter-spacing: -0.02em; }
+
+.a-search-card {
+  margin: 16px 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 16px;
+  position: relative; z-index: 1;
+}
+.a-field-label { font-size: 11px; color: #64748B; font-weight: 500; margin-bottom: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+.a-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: #E2E8F0;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin-bottom: 10px;
+  transition: border-color .2s;
+}
+.a-input::placeholder { color: #475569; }
+.a-input:focus { outline: none; border-color: rgba(212,96,122,0.5); }
+
+.a-input-row { display: flex; gap: 10px; }
+.a-input-row .a-input { margin-bottom: 0; }
+
+.a-swap-btn {
+  width: 36px; height: 36px; min-width: 36px;
+  background: rgba(212,96,122,0.15);
+  border: 1px solid rgba(212,96,122,0.3);
+  border-radius: 8px;
+  color: #D4607A;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  align-self: center;
+  transition: background .2s;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.a-swap-btn:hover { background: rgba(212,96,122,0.25); }
+
+.a-date-row { display: flex; gap: 8px; margin-top: 10px; }
+.a-date-chip {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #94A3B8;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .2s;
+}
+.a-date-chip.selected { border-color: rgba(212,96,122,0.5); color: #E2E8F0; }
+
+.a-search-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #D4607A, #C04060);
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  letter-spacing: 0.01em;
+  transition: opacity .2s, transform .1s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.a-search-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.a-section-label {
+  padding: 16px 20px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; z-index: 1;
+}
+.a-section-title { font-size: 13px; color: #94A3B8; font-weight: 500; }
+.a-timestamp { font-size: 11px; color: #475569; }
+
+.a-sort-bar {
+  display: flex;
+  margin: 0 20px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+  position: relative; z-index: 1;
+}
+.a-sort-btn {
+  flex: 1;
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748B;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: all .2s;
+}
+.a-sort-btn.active {
+  background: rgba(212,96,122,0.2);
+  color: #F0839A;
+  font-weight: 600;
+}
+
+.a-card {
+  margin: 0 20px 12px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative; z-index: 1;
+}
+.a-card:hover { border-color: rgba(212,96,122,0.3); background: rgba(255,255,255,0.07); }
+.a-card.best { border-color: rgba(212,96,122,0.35); }
+
+.a-card-top { display: flex; align-items: flex-start; gap: 12px; }
+.a-times { flex: 1; }
+.a-time-main { font-size: 22px; font-weight: 700; color: #F1F5F9; letter-spacing: -0.02em; line-height: 1; }
+.a-time-arrow { font-size: 12px; color: #475569; margin: 2px 0; display: flex; align-items: center; gap: 4px; }
+.a-time-arrow::before { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, #475569, transparent); max-width: 40px; }
+.a-duration { font-size: 10px; color: #64748B; }
+.a-price-block { text-align: right; }
+.a-price { font-size: 24px; font-weight: 800; color: #D4607A; letter-spacing: -0.02em; line-height: 1; }
+.a-price-label { font-size: 10px; color: #64748B; margin-top: 2px; }
+.a-badge-cheap {
+  background: rgba(212,96,122,0.15);
+  color: #D4607A;
+  border: 1px solid rgba(212,96,122,0.3);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.a-card-meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.a-meta-tag {
+  font-size: 11px;
+  color: #64748B;
+  background: rgba(255,255,255,0.05);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.a-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+.a-btn-outline {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  background: transparent;
+  color: #94A3B8;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: border-color .2s, color .2s;
+}
+.a-btn-outline:hover { border-color: rgba(255,255,255,0.25); color: #E2E8F0; }
+.a-btn-primary {
+  flex: 2;
+  padding: 10px;
+  background: rgba(30,58,95,0.7);
+  border: 1px solid rgba(30,58,95,1);
+  border-radius: 8px;
+  color: #93C5FD;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background .2s;
+}
+.a-btn-primary:hover { background: rgba(30,58,95,0.9); }
+
+/* =========================================================
+   STYLE B — WARM SOFT CARD (Sáng · Thân thiện · Ấm áp)
+   Kem ấm, cards bo to, typography to, cảm giác thân thiện
+   ========================================================= */
+.style-b {
+  min-height: 100vh;
+  background: #FEF9F0;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #1A1008;
+  padding-bottom: 60px;
+}
+
+.b-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  background: #fff;
+  border-bottom: 1px solid #F0E8D8;
+}
+.b-logo { font-size: 20px; font-weight: 800; color: #1A1008; letter-spacing: -0.03em; }
+.b-logo span { color: #D4607A; }
+.b-lang {
+  margin-left: auto;
+  font-size: 12px;
+  color: #A08060;
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid #E8DDD0;
+  border-radius: 20px;
+}
+
+.b-search-card {
+  margin: 16px 16px 0;
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 24px rgba(180,120,60,0.1), 0 1px 4px rgba(180,120,60,0.06);
+  border: 1px solid #F0E8D8;
+}
+.b-field { margin-bottom: 10px; }
+.b-field-label { font-size: 11px; color: #A08060; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.b-input {
+  width: 100%;
+  background: #FEF9F0;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 12px;
+  padding: 13px 14px;
+  font-size: 15px;
+  color: #1A1008;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: border-color .2s;
+}
+.b-input::placeholder { color: #C4B09A; }
+.b-input:focus { outline: none; border-color: #D4607A; }
+
+.b-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -4px 0 6px;
+}
+.b-divider-line { flex: 1; height: 1px; background: #F0E8D8; }
+.b-divider-icon {
+  width: 30px; height: 30px;
+  background: #FEF9F0;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  color: #C67B5C;
+  cursor: pointer;
+}
+
+.b-date-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.b-date-btn {
+  flex: 1;
+  background: #FEF9F0;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 12px;
+  padding: 11px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+.b-date-btn.active { border-color: #D4607A; background: #FFF5F6; }
+.b-date-btn-label { font-size: 10px; color: #A08060; font-weight: 500; }
+.b-date-btn-val { font-size: 14px; font-weight: 700; color: #1A1008; margin-top: 1px; }
+
+.b-search-btn {
+  width: 100%;
+  background: #1A3660;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background .2s, transform .1s;
+}
+.b-search-btn:hover { background: #243E72; transform: translateY(-1px); }
+
+.b-results-header {
+  padding: 20px 20px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.b-results-title { font-size: 14px; font-weight: 700; color: #1A1008; }
+.b-timestamp { font-size: 11px; color: #A08060; }
+
+.b-sort-bar {
+  display: flex;
+  margin: 0 16px 14px;
+  background: #F0E8D8;
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.b-sort-btn {
+  flex: 1;
+  padding: 9px 4px;
+  border: none;
+  background: transparent;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #A08060;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: all .2s;
+}
+.b-sort-btn.active {
+  background: #fff;
+  color: #1A1008;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.b-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border: 1.5px solid #F0E8D8;
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  transition: box-shadow .2s, transform .15s, border-color .2s;
+}
+.b-card:hover { box-shadow: 0 8px 24px rgba(180,120,60,0.12); transform: translateY(-2px); border-color: #E8C8A0; }
+.b-card.best { border-color: #F0A0A8; border-width: 1.5px; }
+
+.b-badge-cheap {
+  background: #FFF0F2;
+  color: #D4607A;
+  border: 1px solid #F8C8D0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.b-card-row { display: flex; align-items: center; gap: 8px; }
+.b-card-times { flex: 1; }
+.b-card-time { font-size: 24px; font-weight: 800; color: #1A1008; letter-spacing: -0.03em; line-height: 1; }
+.b-card-route-line {
+  display: flex; align-items: center; gap: 6px; margin: 4px 0;
+  font-size: 11px; color: #C4B09A;
+}
+.b-card-route-line::after { content: ''; flex: 1; height: 1px; background: #F0E8D8; }
+.b-card-price { font-size: 26px; font-weight: 800; color: #D4607A; letter-spacing: -0.03em; text-align: right; }
+.b-card-price-label { font-size: 10px; color: #A08060; text-align: right; }
+
+.b-card-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.b-meta-pill {
+  font-size: 11px;
+  color: #78604A;
+  background: #FEF9F0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #F0E8D8;
+}
+
+.b-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+.b-btn-outline {
+  flex: 1;
+  padding: 10px;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 10px;
+  background: transparent;
+  color: #78604A;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: border-color .2s, color .2s;
+}
+.b-btn-outline:hover { border-color: #C4A080; color: #1A1008; }
+.b-btn-primary {
+  flex: 2;
+  padding: 10px;
+  background: #1A3660;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: background .2s;
+}
+.b-btn-primary:hover { background: #243E72; }
+
+/* =========================================================
+   STYLE C — BOLD TYPE-FIRST (Táo bạo · Tự tin · Editorial)
+   Trắng tinh, typography to, accent đỏ sakura, số to đậm
+   ========================================================= */
+.style-c {
+  min-height: 100vh;
+  background: #FFFFFF;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #0A0A0F;
+  padding-bottom: 60px;
+}
+
+.c-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 2px solid #0A0A0F;
+}
+.c-logo { font-size: 22px; font-weight: 800; color: #0A0A0F; letter-spacing: -0.04em; }
+.c-logo span { color: #D4607A; }
+.c-lang {
+  margin-left: auto;
+  font-size: 12px;
+  color: #888;
+  border: 1px solid #E0E0E0;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.c-hero {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid #F0F0F0;
+}
+.c-hero-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  color: #D4607A;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.c-hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0A0A0F;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+.c-hero-title em { font-style: normal; color: #D4607A; }
+
+.c-search-card {
+  margin: 16px 20px;
+  border: 2px solid #0A0A0F;
+  border-radius: 0px;
+  padding: 20px;
+}
+.c-field-row { display: flex; align-items: stretch; gap: 0; margin-bottom: 2px; }
+.c-field {
+  flex: 1;
+  border: 1.5px solid #E0E0E0;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: #0A0A0F;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600;
+  background: #fff;
+  transition: border-color .2s;
+}
+.c-field::placeholder { color: #C0C0C0; font-weight: 400; }
+.c-field:focus { outline: none; border-color: #D4607A; z-index: 1; }
+.c-field-label-over {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  margin-bottom: 3px;
+}
+
+.c-swap {
+  width: 44px;
+  background: #0A0A0F;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.c-swap:hover { background: #D4607A; }
+
+.c-date-row { display: flex; gap: 8px; margin: 12px 0; }
+.c-date-btn {
+  flex: 1;
+  border: 1.5px solid #E0E0E0;
+  padding: 11px 12px;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  text-align: left;
+  transition: border-color .2s;
+}
+.c-date-btn:hover { border-color: #0A0A0F; }
+.c-date-btn-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; }
+.c-date-btn-val { font-size: 15px; font-weight: 700; color: #0A0A0F; margin-top: 2px; }
+
+.c-search-btn {
+  width: 100%;
+  background: #D4607A;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  letter-spacing: -0.01em;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background .2s, transform .1s;
+}
+.c-search-btn:hover { background: #B84060; transform: translateY(-1px); }
+
+.c-results-header {
+  padding: 20px 20px 8px;
+  border-bottom: 2px solid #0A0A0F;
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.c-results-title { font-size: 18px; font-weight: 800; letter-spacing: -0.03em; }
+.c-timestamp { font-size: 11px; color: #888; }
+
+.c-sort-bar {
+  display: flex;
+  border-bottom: 2px solid #0A0A0F;
+}
+.c-sort-btn {
+  flex: 1;
+  padding: 12px 4px;
+  border: none;
+  border-right: 1px solid #E8E8E8;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: all .2s;
+  letter-spacing: 0.01em;
+}
+.c-sort-btn:last-child { border-right: none; }
+.c-sort-btn.active {
+  background: #0A0A0F;
+  color: #fff;
+  font-weight: 700;
+}
+
+.c-card {
+  margin: 0;
+  border-bottom: 1px solid #F0F0F0;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: background .15s;
+  display: block;
+}
+.c-card:hover { background: #FAFAFA; }
+.c-card.best { border-left: 3px solid #D4607A; padding-left: 17px; }
+
+.c-badge-cheap {
+  display: inline-block;
+  background: #D4607A;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.c-card-main { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.c-card-times { }
+.c-card-time-big { font-size: 28px; font-weight: 800; color: #0A0A0F; letter-spacing: -0.04em; line-height: 1; }
+.c-card-time-to { font-size: 13px; color: #888; margin: 2px 0; font-weight: 500; }
+.c-card-company { font-size: 12px; font-weight: 600; color: #0A0A0F; }
+.c-card-price-block { text-align: right; }
+.c-card-price { font-size: 32px; font-weight: 800; color: #D4607A; letter-spacing: -0.04em; line-height: 1; }
+.c-card-price-yen { font-size: 16px; font-weight: 700; }
+.c-card-price-label { font-size: 10px; color: #888; margin-top: 3px; }
+
+.c-card-meta { display: flex; gap: 12px; margin-top: 12px; align-items: center; flex-wrap: wrap; }
+.c-meta-tag { font-size: 11px; color: #888; font-weight: 500; }
+.c-meta-dot { color: #DDD; }
+
+.c-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+.c-btn-outline {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1.5px solid #E0E0E0;
+  background: transparent;
+  color: #555;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: border-color .2s, color .2s;
+}
+.c-btn-outline:hover { border-color: #0A0A0F; color: #0A0A0F; }
+.c-btn-primary {
+  flex: 2;
+  padding: 9px 10px;
+  background: #0A0A0F;
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: background .2s;
+}
+.c-btn-primary:hover { background: #D4607A; }
+
+/* ===== SVG ICONS ===== */
+.icon { width: 16px; height: 16px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.icon-map { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-arrow { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-search { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ===== SKELETON ===== */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+.skeleton-dark {
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 480px) {
+  .section > * { max-width: 430px; margin-left: auto; margin-right: auto; }
+  .a-hero, .b-hero, .c-hero { max-width: 430px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <span class="nav-title">BusHop — 3 Mockup Styles</span>
+  <button class="nav-btn active" onclick="show('a', this)">A · Night Fuji</button>
+  <button class="nav-btn" onclick="show('b', this)">B · Warm Soft</button>
+  <button class="nav-btn" onclick="show('c', this)">C · Bold Type</button>
+</nav>
+
+<!-- ============================================================
+     STYLE A — GLASSMORPHISM DARK "Night Fuji"
+     ============================================================ -->
+<section class="section active" id="sec-a">
+  <div class="style-a">
+
+    <header class="a-header">
+      <span class="a-logo">Bus<span>Hop</span></span>
+      <button class="a-lang">🇻🇳 VI</button>
+    </header>
+
+    <div class="a-hero">
+      <div class="a-hero-label">Tìm vé xe bus liên tỉnh</div>
+      <h1 class="a-hero-title">Rẻ nhất tại Nhật,<br>bằng tiếng Việt</h1>
+    </div>
+
+    <div class="a-search-card">
+      <div class="a-field-label">Điểm đi</div>
+      <input class="a-input" type="text" placeholder="Gõ tên tỉnh... (vd: Nagoya)" value="Nagoya">
+
+      <div class="a-field-label">Điểm đến</div>
+      <input class="a-input" type="text" placeholder="Gõ tên tỉnh... (vd: Tokyo)" value="Tokyo">
+
+      <div class="a-date-row">
+        <div class="a-date-chip selected">
+          <div style="font-size:10px;color:#64748B;margin-bottom:2px;">Ngày đi</div>
+          <div style="font-size:14px;font-weight:700;">T7 · 03/05</div>
+        </div>
+        <div class="a-date-chip">
+          <div style="font-size:10px;color:#64748B;margin-bottom:2px;">Ngày về</div>
+          <div style="font-size:14px;color:#475569;">Không chọn</div>
+        </div>
+      </div>
+
+      <button class="a-search-btn">
+        <svg class="icon icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Tìm vé rẻ nhất
+      </button>
+    </div>
+
+    <div class="a-section-label">
+      <span class="a-section-title">4 chuyến · Nagoya → Tokyo</span>
+      <span class="a-timestamp">Cập nhật 14:30</span>
+    </div>
+
+    <div class="a-sort-bar">
+      <button class="a-sort-btn active">Rẻ nhất</button>
+      <button class="a-sort-btn">Nhanh nhất</button>
+      <button class="a-sort-btn">Balanced</button>
+    </div>
+
+    <!-- Card 1 — Cheapest -->
+    <div class="a-card best">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span class="a-badge-cheap">Rẻ nhất</span>
+        <span style="font-size:11px;color:#475569;">Willer Express</span>
+      </div>
+      <div class="a-card-top">
+        <div class="a-times">
+          <div class="a-time-main">23:00</div>
+          <div class="a-time-arrow">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M6 3l2 2-2 2" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            7.5 tiếng · đêm
+          </div>
+          <div class="a-time-main">06:30 <span style="font-size:14px;font-weight:400;color:#64748B;">+1</span></div>
+        </div>
+        <div class="a-price-block">
+          <div class="a-price">¥1,800</div>
+          <div class="a-price-label">/ người</div>
+        </div>
+      </div>
+      <div class="a-card-meta">
+        <span class="a-meta-tag">3列独立</span>
+        <span class="a-meta-tag">Còn 8 ghế</span>
+        <span class="a-meta-tag">Wi-Fi</span>
+      </div>
+      <div class="a-card-actions">
+        <button class="a-btn-outline">
+          <svg class="icon icon-map" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Bến xe
+        </button>
+        <button class="a-btn-primary">
+          Xem giá mới nhất
+          <svg class="icon icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="a-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:11px;color:#475569;font-weight:500;">Kosoku Bus</span>
+      </div>
+      <div class="a-card-top">
+        <div class="a-times">
+          <div class="a-time-main">22:30</div>
+          <div class="a-time-arrow">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M6 3l2 2-2 2" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            8 tiếng
+          </div>
+          <div class="a-time-main">06:30 <span style="font-size:14px;font-weight:400;color:#64748B;">+1</span></div>
+        </div>
+        <div class="a-price-block">
+          <div class="a-price">¥2,200</div>
+          <div class="a-price-label">/ người</div>
+        </div>
+      </div>
+      <div class="a-card-meta">
+        <span class="a-meta-tag">4列</span>
+        <span class="a-meta-tag">Còn 15 ghế</span>
+      </div>
+      <div class="a-card-actions">
+        <button class="a-btn-outline">
+          <svg class="icon icon-map" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Bến xe
+        </button>
+        <button class="a-btn-primary">
+          Xem giá mới nhất
+          <svg class="icon icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Skeleton card -->
+    <div class="a-card" style="opacity:0.5;">
+      <div class="skeleton-dark" style="height:12px;width:60%;margin-bottom:14px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div class="skeleton-dark" style="height:28px;width:70px;margin-bottom:6px;"></div>
+          <div class="skeleton-dark" style="height:10px;width:50px;margin-bottom:6px;"></div>
+          <div class="skeleton-dark" style="height:28px;width:70px;"></div>
+        </div>
+        <div class="skeleton-dark" style="height:32px;width:80px;border-radius:6px;"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     STYLE B — WARM SOFT CARD
+     ============================================================ -->
+<section class="section" id="sec-b">
+  <div class="style-b">
+
+    <header class="b-header">
+      <span class="b-logo">Bus<span>Hop</span></span>
+      <button class="b-lang">🇻🇳 Tiếng Việt</button>
+    </header>
+
+
+    <div class="b-search-card">
+      <div class="b-field">
+        <div class="b-field-label">Điểm đi</div>
+        <input class="b-input" type="text" placeholder="Gõ tên tỉnh..." value="Nagoya">
+      </div>
+
+      <div class="b-divider">
+        <div class="b-divider-line"></div>
+        <div class="b-divider-icon">⇅</div>
+        <div class="b-divider-line"></div>
+      </div>
+
+      <div class="b-field">
+        <div class="b-field-label">Điểm đến</div>
+        <input class="b-input" type="text" placeholder="Gõ tên tỉnh..." value="Tokyo">
+      </div>
+
+      <div class="b-date-row">
+        <div class="b-date-btn active">
+          <div class="b-date-btn-label">Ngày đi</div>
+          <div class="b-date-btn-val">03/05 (T7)</div>
+        </div>
+        <div class="b-date-btn">
+          <div class="b-date-btn-label">Ngày về</div>
+          <div class="b-date-btn-val" style="color:#C4B09A;">Không chọn</div>
+        </div>
+      </div>
+
+      <button class="b-search-btn">
+        <svg class="icon icon-search" viewBox="0 0 24 24" style="stroke:#fff;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Tìm vé
+      </button>
+    </div>
+
+    <div class="b-results-header">
+      <span class="b-results-title">4 chuyến Nagoya → Tokyo</span>
+      <span class="b-timestamp">Cập nhật 14:30</span>
+    </div>
+
+    <div class="b-sort-bar">
+      <button class="b-sort-btn active">Rẻ nhất</button>
+      <button class="b-sort-btn">Nhanh nhất</button>
+      <button class="b-sort-btn">Balanced</button>
+    </div>
+
+    <!-- Card 1 -->
+    <div class="b-card best">
+      <span class="b-badge-cheap">Rẻ nhất</span>
+      <div class="b-card-row">
+        <div class="b-card-times">
+          <div class="b-card-time">23:00</div>
+          <div class="b-card-route-line">7.5 tiếng</div>
+          <div class="b-card-time">06:30 <span style="font-size:12px;color:#C4B09A;font-weight:500;">+1</span></div>
+        </div>
+        <div style="flex:1;"></div>
+        <div>
+          <div class="b-card-price">¥1,800</div>
+          <div class="b-card-price-label">Willer Express</div>
+        </div>
+      </div>
+      <div class="b-card-meta">
+        <span class="b-meta-pill">Ghế độc lập 3 hàng</span>
+        <span class="b-meta-pill">Còn 8 ghế</span>
+        <span class="b-meta-pill">Wi-Fi</span>
+      </div>
+      <div class="b-card-actions">
+        <button class="b-btn-outline">
+          <svg class="icon icon-map" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Chỉ đường bến xe
+        </button>
+        <button class="b-btn-primary">
+          Xem giá mới nhất
+          <svg class="icon icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="b-card">
+      <div class="b-card-row">
+        <div class="b-card-times">
+          <div class="b-card-time">22:30</div>
+          <div class="b-card-route-line">8 tiếng</div>
+          <div class="b-card-time">06:30 <span style="font-size:12px;color:#C4B09A;font-weight:500;">+1</span></div>
+        </div>
+        <div style="flex:1;"></div>
+        <div>
+          <div class="b-card-price">¥2,200</div>
+          <div class="b-card-price-label">Kosoku Bus</div>
+        </div>
+      </div>
+      <div class="b-card-meta">
+        <span class="b-meta-pill">Ghế ngồi 4 hàng</span>
+        <span class="b-meta-pill">Còn 15 ghế</span>
+      </div>
+      <div class="b-card-actions">
+        <button class="b-btn-outline">
+          <svg class="icon icon-map" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Chỉ đường bến xe
+        </button>
+        <button class="b-btn-primary">
+          Xem giá mới nhất
+          <svg class="icon icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Skeleton -->
+    <div class="b-card" style="opacity:0.5;">
+      <div class="skeleton" style="height:11px;width:55%;margin-bottom:12px;background:linear-gradient(90deg,#F0E8D8 25%,#E8DDD0 50%,#F0E8D8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;"></div>
+      <div style="display:flex;justify-content:space-between;">
+        <div>
+          <div class="skeleton" style="height:28px;width:65px;margin-bottom:8px;background:linear-gradient(90deg,#F0E8D8 25%,#E8DDD0 50%,#F0E8D8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;"></div>
+          <div class="skeleton" style="height:28px;width:65px;background:linear-gradient(90deg,#F0E8D8 25%,#E8DDD0 50%,#F0E8D8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;"></div>
+        </div>
+        <div class="skeleton" style="height:36px;width:80px;background:linear-gradient(90deg,#F0E8D8 25%,#E8DDD0 50%,#F0E8D8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     STYLE C — BOLD TYPE-FIRST
+     ============================================================ -->
+<section class="section" id="sec-c">
+  <div class="style-c">
+
+    <header class="c-header">
+      <span class="c-logo">Bus<span>Hop</span></span>
+      <button class="c-lang">VI · JP · EN</button>
+    </header>
+
+    <div class="c-hero">
+      <div class="c-hero-kicker">Xe bus liên tỉnh tại Nhật · Tiếng Việt</div>
+      <h1 class="c-hero-title">Tìm vé<br><em>rẻ nhất</em><br>trong 3 giây.</h1>
+    </div>
+
+    <div class="c-search-card">
+      <div style="margin-bottom:12px;">
+        <div class="c-field-label-over">Điểm đi</div>
+        <div class="c-field-row">
+          <input class="c-field" type="text" placeholder="Tên tỉnh..." value="Nagoya" style="border-radius:0;flex:1;">
+          <button class="c-swap">⇅</button>
+          <input class="c-field" type="text" placeholder="Tên tỉnh..." value="Tokyo" style="border-radius:0;flex:1;border-left:none;">
+        </div>
+        <div style="display:flex;gap:0;margin-top:0;">
+          <div style="flex:1;font-size:9px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding-top:4px;">Điểm đi</div>
+          <div style="width:44px;"></div>
+          <div style="flex:1;font-size:9px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding-top:4px;text-align:right;">Điểm đến</div>
+        </div>
+      </div>
+
+      <div class="c-date-row">
+        <div class="c-date-btn">
+          <div class="c-date-btn-label">Ngày đi</div>
+          <div class="c-date-btn-val">Thứ 7, 03/05</div>
+        </div>
+        <div class="c-date-btn">
+          <div class="c-date-btn-label">Ngày về</div>
+          <div class="c-date-btn-val" style="color:#C0C0C0;font-weight:400;">Không chọn</div>
+        </div>
+      </div>
+
+      <button class="c-search-btn">
+        TÌM VÉ RẺ NHẤT
+        <svg class="icon icon-arrow" viewBox="0 0 24 24" style="stroke:#fff;width:18px;height:18px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="c-results-header">
+      <span class="c-results-title">4 chuyến · Nagoya → Tokyo</span>
+      <span class="c-timestamp">Cập nhật 14:30</span>
+    </div>
+
+    <div class="c-sort-bar">
+      <button class="c-sort-btn active">Rẻ nhất</button>
+      <button class="c-sort-btn">Nhanh nhất</button>
+      <button class="c-sort-btn">Balanced</button>
+    </div>
+
+    <!-- Card 1 -->
+    <div class="c-card best">
+      <span class="c-badge-cheap">Rẻ nhất</span>
+      <div class="c-card-main">
+        <div class="c-card-times">
+          <div class="c-card-time-big">23:00</div>
+          <div class="c-card-time-to">→ 06:30 (+1 ngày) · 7.5 tiếng</div>
+          <div class="c-card-company">Willer Express</div>
+        </div>
+        <div class="c-card-price-block">
+          <div class="c-card-price"><span class="c-card-price-yen">¥</span>1,800</div>
+          <div class="c-card-price-label">/ người</div>
+        </div>
+      </div>
+      <div class="c-card-meta">
+        <span class="c-meta-tag">Ghế độc lập 3 hàng</span>
+        <span class="c-meta-dot">·</span>
+        <span class="c-meta-tag">Còn 8 ghế</span>
+        <span class="c-meta-dot">·</span>
+        <span class="c-meta-tag">Wi-Fi</span>
+      </div>
+      <div class="c-card-actions">
+        <button class="c-btn-outline">
+          <svg class="icon icon-map" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          BẾN XE
+        </button>
+        <button class="c-btn-primary">
+          XEM GIÁ MỚI NHẤT
+          <svg class="icon icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="c-card">
+      <div class="c-card-main">
+        <div class="c-card-times">
+          <div class="c-card-time-big">22:30</div>
+          <div class="c-card-time-to">→ 06:30 (+1 ngày) · 8 tiếng</div>
+          <div class="c-card-company">Kosoku Bus</div>
+        </div>
+        <div class="c-card-price-block">
+          <div class="c-card-price"><span class="c-card-price-yen">¥</span>2,200</div>
+          <div class="c-card-price-label">/ người</div>
+        </div>
+      </div>
+      <div class="c-card-meta">
+        <span class="c-meta-tag">Ghế ngồi 4 hàng</span>
+        <span class="c-meta-dot">·</span>
+        <span class="c-meta-tag">Còn 15 ghế</span>
+      </div>
+      <div class="c-card-actions">
+        <button class="c-btn-outline">
+          <svg class="icon icon-map" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          BẾN XE
+        </button>
+        <button class="c-btn-primary">
+          XEM GIÁ MỚI NHẤT
+          <svg class="icon icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 3 skeleton -->
+    <div class="c-card" style="opacity:0.4;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div class="skeleton" style="height:32px;width:80px;margin-bottom:6px;"></div>
+          <div class="skeleton" style="height:12px;width:120px;margin-bottom:4px;"></div>
+          <div class="skeleton" style="height:12px;width:80px;"></div>
+        </div>
+        <div class="skeleton" style="height:36px;width:80px;"></div>
+      </div>
+    </div>
+
+    <!-- Bottom label -->
+    <div style="padding:20px;text-align:center;border-top:1px solid #F0F0F0;">
+      <p style="font-size:11px;color:#888;">Dữ liệu từ Willer Express · Kosoku Bus · Cập nhật 3 lần/ngày</p>
+      <a href="#" style="font-size:12px;font-weight:700;color:#D4607A;text-decoration:none;margin-top:4px;display:inline-block;">Xem giá mới nhất trên site nhà xe →</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+function show(id, btn) {
+  // sections
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  // buttons
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// Sort toggle interactivity
+document.querySelectorAll('.a-sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => { document.querySelectorAll('.a-sort-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); });
+});
+document.querySelectorAll('.b-sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => { document.querySelectorAll('.b-sort-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); });
+});
+document.querySelectorAll('.c-sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => { document.querySelectorAll('.c-sort-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); });
+});
+</script>
+</body>
+</html>

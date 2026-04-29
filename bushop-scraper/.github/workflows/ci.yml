@@ -1,0 +1,84 @@
+# bushop-scraper/.github/workflows/ci.yml
+# CI workflow for bushop-scraper (FastAPI) repo
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: bushop
+          POSTGRES_PASSWORD: bushop
+          POSTGRES_DB: bushop_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install production dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run Alembic migrations
+        run: alembic upgrade head
+        env:
+          DATABASE_URL: postgresql+asyncpg://bushop:bushop@localhost:5432/bushop_test
+          DATABASE_URL_SYNC: postgresql+psycopg2://bushop:bushop@localhost:5432/bushop_test
+          INTERNAL_API_KEY: ci-placeholder-key
+          DEBUG: "true"
+          LOG_LEVEL: INFO
+
+      - name: Run ruff lint
+        run: ruff check .
+
+      - name: Run pytest
+        run: pytest --tb=short --cov=app --cov-report=xml --cov-report=term-missing --cov-fail-under=50 --junitxml=test-results/junit.xml
+        env:
+          DATABASE_URL: postgresql+asyncpg://bushop:bushop@localhost:5432/bushop_test
+          DATABASE_URL_SYNC: postgresql+psycopg2://bushop:bushop@localhost:5432/bushop_test
+          INTERNAL_API_KEY: ci-placeholder-key
+          DEBUG: "true"
+          LOG_LEVEL: INFO
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: be-coverage-${{ github.run_number }}
+          path: coverage.xml
+          retention-days: 30
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: be-test-results-${{ github.run_number }}
+          path: test-results/junit.xml
+          retention-days: 30

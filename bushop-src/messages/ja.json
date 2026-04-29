@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "BusHop — 日本のバスチケット比較",
+    "subtitle": "日本の都市間バス料金を検索・比較"
+  },
+  "common": {
+    "search": "検索",
+    "loading": "読み込み中..."
+  }
+}

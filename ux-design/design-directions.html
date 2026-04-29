@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BusHop — Design Directions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #111; color: #fff; }
+
+  /* NAV */
+  .nav { display: flex; gap: 8px; padding: 16px 24px; background: #1a1a1a; position: sticky; top: 0; z-index: 100; }
+  .nav button { padding: 8px 20px; border-radius: 20px; border: 1px solid #444; background: transparent; color: #aaa; cursor: pointer; font-size: 14px; transition: all .2s; }
+  .nav button.active { background: #D4607A; border-color: #D4607A; color: #fff; }
+  .nav h1 { margin-right: auto; font-size: 16px; color: #fff; line-height: 36px; }
+
+  /* SECTIONS */
+  .direction { display: none; min-height: 100vh; }
+  .direction.active { display: block; }
+
+  /* ============ DIRECTION A — MINIMAL CLEAN ============ */
+  .dir-a { background: #F8F9FC; color: #0F1E30; }
+
+  .dir-a .header {
+    background: #fff;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .dir-a .logo { font-size: 20px; font-weight: 700; color: #1E3A5F; }
+  .dir-a .lang { margin-left: auto; font-size: 13px; color: #64748B; }
+
+  .dir-a .search-box {
+    background: #fff;
+    margin: 16px;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+  }
+  .dir-a .search-row { display: flex; flex-direction: column; gap: 8px; }
+  .dir-a .search-input {
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 16px;
+    color: #0F1E30;
+    background: #F8F9FC;
+  }
+  .dir-a .search-input::placeholder { color: #94A3B8; }
+  .dir-a .search-btn {
+    background: #1E3A5F;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
+  .dir-a .sort-bar {
+    display: flex;
+    margin: 0 16px 12px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .dir-a .sort-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #64748B;
+    cursor: pointer;
+  }
+  .dir-a .sort-btn.active { background: #1E3A5F; color: #fff; font-weight: 600; }
+
+  .dir-a .timestamp { text-align: center; font-size: 12px; color: #94A3B8; margin-bottom: 8px; }
+
+  .dir-a .card {
+    background: #fff;
+    margin: 0 16px 10px;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  }
+  .dir-a .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .dir-a .route { font-size: 17px; font-weight: 700; color: #0F1E30; }
+  .dir-a .price { font-size: 22px; font-weight: 700; color: #D4607A; }
+  .dir-a .card-mid { display: flex; gap: 8px; margin: 6px 0; font-size: 14px; color: #64748B; }
+  .dir-a .badge { background: #FFF0F3; color: #D4607A; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+  .dir-a .card-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .dir-a .btn-map { flex: 1; padding: 9px; border: 1px solid #E2E8F0; border-radius: 7px; font-size: 13px; color: #1E3A5F; background: #fff; cursor: pointer; }
+  .dir-a .btn-book { flex: 2; padding: 9px; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; background: #1E3A5F; color: #fff; cursor: pointer; }
+
+  /* ============ DIRECTION B — CARD HEAVY ============ */
+  .dir-b { background: #F1F5F9; color: #0F1E30; }
+
+  .dir-b .header {
+    background: #1E3A5F;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+  }
+  .dir-b .logo { font-size: 20px; font-weight: 700; color: #fff; }
+  .dir-b .lang { margin-left: auto; font-size: 13px; color: rgba(255,255,255,0.7); }
+
+  .dir-b .search-box {
+    background: #1E3A5F;
+    padding: 0 16px 16px;
+  }
+  .dir-b .search-input {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 16px;
+    color: #0F1E30;
+    background: #fff;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .dir-b .search-input::placeholder { color: #94A3B8; }
+  .dir-b .search-row { display: flex; gap: 8px; }
+  .dir-b .search-date { flex: 1; border: none; border-radius: 8px; padding: 12px 14px; font-size: 16px; color: #0F1E30; background: #fff; }
+  .dir-b .search-btn { flex: 1; background: #D4607A; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+  .dir-b .results-header { padding: 12px 16px; font-size: 13px; color: #64748B; display: flex; justify-content: space-between; }
+  .dir-b .sort-pills { display: flex; gap: 6px; padding: 0 16px 10px; }
+  .dir-b .pill { padding: 6px 14px; border-radius: 20px; border: 1px solid #CBD5E1; font-size: 13px; color: #64748B; background: #fff; cursor: pointer; }
+  .dir-b .pill.active { background: #1E3A5F; color: #fff; border-color: #1E3A5F; }
+
+  .dir-b .card {
+    background: #fff;
+    margin: 0 16px 10px;
+    border-radius: 10px;
+    border-left: 4px solid #1E3A5F;
+    padding: 14px 14px 14px 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .dir-b .card.cheapest { border-left-color: #D4607A; }
+  .dir-b .card-top { display: flex; justify-content: space-between; }
+  .dir-b .operator { font-size: 12px; color: #64748B; font-weight: 500; margin-bottom: 4px; }
+  .dir-b .route { font-size: 16px; font-weight: 700; }
+  .dir-b .price { font-size: 24px; font-weight: 700; color: #D4607A; }
+  .dir-b .yen { font-size: 14px; font-weight: 400; }
+  .dir-b .card-meta { display: flex; gap: 12px; font-size: 13px; color: #64748B; margin: 6px 0 10px; }
+  .dir-b .badge-cheap { background: #D4607A; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; display: inline-block; }
+  .dir-b .card-actions { display: flex; gap: 8px; }
+  .dir-b .btn-map { flex: 1; padding: 8px; border: 1px solid #E2E8F0; border-radius: 7px; font-size: 12px; color: #1E3A5F; background: #fff; cursor: pointer; }
+  .dir-b .btn-book { flex: 2; padding: 8px; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; background: #D4607A; color: #fff; cursor: pointer; }
+
+  /* ============ DIRECTION C — FUJI THEMED ============ */
+  .dir-c { background: #F8F9FC; color: #0F1E30; }
+
+  .dir-c .header {
+    background: linear-gradient(135deg, #1E3A5F 0%, #2D5986 100%);
+    padding: 20px 20px 40px;
+  }
+  .dir-c .logo { font-size: 22px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .dir-c .logo-sub { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 400; margin-top: 2px; }
+  .dir-c .tagline { color: rgba(255,255,255,0.85); font-size: 14px; margin-top: 8px; }
+  .dir-c .lang-switch { float: right; font-size: 12px; color: rgba(255,255,255,0.7); margin-top: -30px; }
+
+  .dir-c .search-float {
+    background: #fff;
+    margin: -24px 16px 16px;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(30,58,95,0.15);
+  }
+  .dir-c .search-label { font-size: 11px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .dir-c .search-input {
+    width: 100%;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 16px;
+    color: #0F1E30;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .dir-c .search-input:focus { border-color: #1E3A5F; outline: none; }
+  .dir-c .search-row { display: flex; gap: 8px; }
+  .dir-c .search-date { flex: 1; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 11px 14px; font-size: 15px; color: #64748B; }
+  .dir-c .search-btn { flex: 1.2; background: linear-gradient(135deg, #1E3A5F, #2D5986); color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+  .dir-c .section-title { padding: 8px 16px; font-size: 13px; font-weight: 600; color: #1E3A5F; display: flex; justify-content: space-between; }
+  .dir-c .sort-bar { display: flex; margin: 0 16px 12px; background: #EEF2F7; border-radius: 8px; padding: 3px; }
+  .dir-c .sort-btn { flex: 1; padding: 7px; border: none; background: transparent; border-radius: 6px; font-size: 13px; color: #64748B; cursor: pointer; }
+  .dir-c .sort-btn.active { background: #fff; color: #1E3A5F; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+  .dir-c .card {
+    background: #fff;
+    margin: 0 16px 10px;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 8px rgba(30,58,95,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .dir-c .sakura { position: absolute; right: 12px; top: 12px; font-size: 16px; opacity: 0.15; }
+  .dir-c .operator { font-size: 11px; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .dir-c .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin: 4px 0 6px; }
+  .dir-c .route { font-size: 17px; font-weight: 700; color: #0F1E30; }
+  .dir-c .price-wrap { text-align: right; }
+  .dir-c .price { font-size: 24px; font-weight: 700; color: #D4607A; line-height: 1; }
+  .dir-c .price-label { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+  .dir-c .card-meta { display: flex; gap: 10px; font-size: 13px; color: #64748B; margin-bottom: 10px; }
+  .dir-c .badge { background: linear-gradient(135deg, #D4607A, #E8889A); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; display: inline-block; }
+  .dir-c .card-actions { display: flex; gap: 8px; }
+  .dir-c .btn-map { flex: 1; padding: 9px; border: 1.5px solid #E2E8F0; border-radius: 8px; font-size: 12px; color: #1E3A5F; background: #fff; cursor: pointer; font-weight: 500; }
+  .dir-c .btn-book { flex: 2; padding: 9px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; background: linear-gradient(135deg, #D4607A, #C04060); color: #fff; cursor: pointer; }
+
+  /* ============ DIRECTION D — BOTTOM NAV APP-LIKE ============ */
+  .dir-d { background: #F8F9FC; color: #0F1E30; position: relative; min-height: 100vh; padding-bottom: 72px; }
+
+  .dir-d .header {
+    background: #fff;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+  }
+  .dir-d .logo { font-size: 20px; font-weight: 700; color: #1E3A5F; }
+  .dir-d .lang { margin-left: auto; font-size: 13px; color: #64748B; }
+
+  .dir-d .search-box {
+    background: #1E3A5F;
+    padding: 16px;
+  }
+  .dir-d .search-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .dir-d .search-row-top { display: flex; gap: 8px; margin-bottom: 8px; }
+  .dir-d .search-input {
+    flex: 1;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 15px;
+    color: #0F1E30;
+    background: #fff;
+  }
+  .dir-d .swap-btn { background: rgba(255,255,255,0.15); border: none; border-radius: 8px; padding: 0 12px; color: #fff; font-size: 18px; cursor: pointer; }
+  .dir-d .search-row-bot { display: flex; gap: 8px; }
+  .dir-d .search-date { flex: 1; border: none; border-radius: 8px; padding: 11px 14px; font-size: 15px; color: #64748B; background: #fff; }
+  .dir-d .search-btn { flex: 1; background: #D4607A; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+  .dir-d .results-bar { padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .dir-d .results-count { font-size: 13px; color: #64748B; }
+  .dir-d .sort-tabs { display: flex; gap: 4px; }
+  .dir-d .sort-tab { padding: 5px 12px; border-radius: 6px; border: none; background: transparent; font-size: 12px; color: #64748B; cursor: pointer; }
+  .dir-d .sort-tab.active { background: #EEF2F7; color: #1E3A5F; font-weight: 600; }
+
+  .dir-d .card {
+    background: #fff;
+    margin: 0 16px 8px;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .dir-d .card-row1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .dir-d .times { font-size: 18px; font-weight: 700; color: #0F1E30; }
+  .dir-d .duration { font-size: 12px; color: #94A3B8; }
+  .dir-d .price { font-size: 22px; font-weight: 700; color: #D4607A; }
+  .dir-d .card-row2 { display: flex; justify-content: space-between; font-size: 13px; color: #64748B; margin-bottom: 10px; }
+  .dir-d .badge { background: #FFF0F3; color: #D4607A; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+  .dir-d .card-btns { display: flex; gap: 8px; }
+  .dir-d .btn-map { flex: 1; padding: 9px; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12px; color: #1E3A5F; background: #fff; cursor: pointer; }
+  .dir-d .btn-book { flex: 2; padding: 9px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; background: #1E3A5F; color: #fff; cursor: pointer; }
+
+  .dir-d .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: #fff;
+    border-top: 1px solid #E2E8F0;
+    display: flex;
+    padding: 8px 0 12px;
+    z-index: 50;
+  }
+  .dir-d .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: #94A3B8; cursor: pointer; }
+  .dir-d .nav-item.active { color: #1E3A5F; }
+  .dir-d .nav-icon { font-size: 20px; }
+
+  /* ============ DIRECTION E — DARK MODE ============ */
+  .dir-e { background: #0A0F1E; color: #E8EDF5; }
+
+  .dir-e .header {
+    background: #0D1529;
+    border-bottom: 1px solid #1E2D4A;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+  }
+  .dir-e .logo { font-size: 20px; font-weight: 700; color: #7EB3FF; }
+  .dir-e .lang { margin-left: auto; font-size: 13px; color: #4A6080; }
+
+  .dir-e .search-box {
+    background: #0D1529;
+    padding: 16px;
+    border-bottom: 1px solid #1E2D4A;
+  }
+  .dir-e .search-input {
+    width: 100%;
+    display: block;
+    background: #162038;
+    border: 1px solid #1E2D4A;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 16px;
+    color: #E8EDF5;
+    margin-bottom: 8px;
+  }
+  .dir-e .search-input::placeholder { color: #3A5070; }
+  .dir-e .search-row { display: flex; gap: 8px; }
+  .dir-e .search-date { flex: 1; background: #162038; border: 1px solid #1E2D4A; border-radius: 8px; padding: 12px 14px; font-size: 15px; color: #7EB3FF; }
+  .dir-e .search-btn { flex: 1; background: linear-gradient(135deg, #1E5ADB, #3B7FFF); color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+  .dir-e .sort-bar { display: flex; gap: 8px; padding: 12px 16px 8px; }
+  .dir-e .sort-chip { padding: 6px 14px; border-radius: 20px; border: 1px solid #1E2D4A; background: transparent; color: #4A6080; font-size: 13px; cursor: pointer; }
+  .dir-e .sort-chip.active { background: #1E5ADB; border-color: #1E5ADB; color: #fff; font-weight: 600; }
+
+  .dir-e .timestamp { font-size: 12px; color: #2A4060; padding: 0 16px 8px; }
+
+  .dir-e .card {
+    background: #0D1529;
+    margin: 0 16px 8px;
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid #1E2D4A;
+    position: relative;
+    overflow: hidden;
+  }
+  .dir-e .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #1E2D4A; }
+  .dir-e .card.top::before { background: linear-gradient(90deg, #1E5ADB, #3B7FFF); }
+  .dir-e .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .dir-e .operator { font-size: 11px; color: #3A5070; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .dir-e .route { font-size: 18px; font-weight: 700; color: #E8EDF5; }
+  .dir-e .price { font-size: 24px; font-weight: 700; color: #3B7FFF; }
+  .dir-e .badge { background: #0F2A5C; color: #3B7FFF; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; display: inline-block; border: 1px solid #1E4080; }
+  .dir-e .card-meta { display: flex; gap: 10px; font-size: 13px; color: #3A5070; margin-bottom: 10px; }
+  .dir-e .card-btns { display: flex; gap: 8px; }
+  .dir-e .btn-map { flex: 1; padding: 9px; border: 1px solid #1E2D4A; border-radius: 8px; font-size: 12px; color: #7EB3FF; background: transparent; cursor: pointer; }
+  .dir-e .btn-book { flex: 2; padding: 9px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; background: linear-gradient(135deg, #1E5ADB, #3B7FFF); color: #fff; cursor: pointer; }
+
+  /* ============ DIRECTION F — COMPACT LIST ============ */
+  .dir-f { background: #F0F4F8; color: #0F1E30; }
+
+  .dir-f .header {
+    background: #fff;
+    border-bottom: 1px solid #DDE3EC;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+  }
+  .dir-f .logo { font-size: 18px; font-weight: 700; color: #1E3A5F; }
+  .dir-f .lang { margin-left: auto; font-size: 12px; color: #94A3B8; }
+
+  .dir-f .search-box {
+    background: #fff;
+    padding: 12px 16px;
+    border-bottom: 1px solid #DDE3EC;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .dir-f .search-input {
+    flex: 1;
+    border: 1px solid #DDE3EC;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #0F1E30;
+    background: #F8FAFC;
+    min-width: 0;
+  }
+  .dir-f .search-sep { color: #CBD5E1; font-size: 16px; flex-shrink: 0; }
+  .dir-f .search-date { border: 1px solid #DDE3EC; border-radius: 6px; padding: 8px 10px; font-size: 14px; color: #64748B; background: #F8FAFC; width: 110px; }
+  .dir-f .search-btn { background: #1E3A5F; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+
+  .dir-f .filter-bar {
+    background: #fff;
+    border-bottom: 1px solid #DDE3EC;
+    padding: 8px 16px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .dir-f .filter-label { font-size: 11px; color: #94A3B8; margin-right: 4px; }
+  .dir-f .filter-chip { padding: 4px 10px; border-radius: 4px; border: 1px solid #DDE3EC; background: #fff; font-size: 12px; color: #64748B; cursor: pointer; }
+  .dir-f .filter-chip.active { background: #EEF2F7; color: #1E3A5F; border-color: #C8D6E8; font-weight: 600; }
+  .dir-f .spacer { margin-left: auto; font-size: 11px; color: #94A3B8; }
+
+  .dir-f .list-header {
+    padding: 8px 16px;
+    font-size: 11px;
+    color: #94A3B8;
+    display: flex;
+    justify-content: space-between;
+    background: #F0F4F8;
+  }
+
+  .dir-f .row {
+    background: #fff;
+    margin: 0 0 1px;
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #EEF2F7;
+  }
+  .dir-f .row:hover { background: #F8FAFC; }
+  .dir-f .row.cheapest { border-left: 3px solid #D4607A; }
+  .dir-f .col-time { min-width: 90px; }
+  .dir-f .time-main { font-size: 15px; font-weight: 700; color: #0F1E30; }
+  .dir-f .time-dur { font-size: 11px; color: #94A3B8; }
+  .dir-f .col-op { flex: 1; min-width: 0; }
+  .dir-f .op-name { font-size: 13px; color: #334155; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dir-f .op-meta { font-size: 11px; color: #94A3B8; }
+  .dir-f .col-seats { min-width: 50px; text-align: center; }
+  .dir-f .seats-num { font-size: 13px; font-weight: 600; color: #0D9488; }
+  .dir-f .seats-label { font-size: 10px; color: #94A3B8; }
+  .dir-f .col-price { min-width: 70px; text-align: right; }
+  .dir-f .price { font-size: 16px; font-weight: 700; color: #D4607A; }
+  .dir-f .badge { background: #FFF0F3; color: #D4607A; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; display: inline-block; }
+  .dir-f .col-action { min-width: 28px; }
+  .dir-f .arrow { font-size: 16px; color: #CBD5E1; }
+
+  .dir-f .row-detail {
+    background: #F8FAFC;
+    padding: 10px 16px 12px 28px;
+    border-bottom: 1px solid #EEF2F7;
+    display: flex;
+    gap: 8px;
+  }
+  .dir-f .btn-map { padding: 8px 16px; border: 1px solid #DDE3EC; border-radius: 6px; font-size: 12px; color: #1E3A5F; background: #fff; cursor: pointer; }
+  .dir-f .btn-book { padding: 8px 20px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1E3A5F; color: #fff; cursor: pointer; }
+
+  /* Label */
+  .dir-label {
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    color: #666;
+    background: #1a1a1a;
+  }
+  .dir-label strong { color: #fff; display: block; font-size: 16px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <h1>🚌 BusHop — Design Directions</h1>
+  <button class="active" onclick="show('a', this)">A — Minimal Clean</button>
+  <button onclick="show('b', this)">B — Card Heavy</button>
+  <button onclick="show('c', this)">C — Fuji Themed</button>
+  <button onclick="show('d', this)">D — App Bottom Nav</button>
+  <button onclick="show('e', this)">E — Dark Mode</button>
+  <button onclick="show('f', this)">F — Compact List</button>
+</div>
+
+<!-- ===== DIRECTION A ===== -->
+<div class="direction dir-a active" id="dir-a">
+  <div class="dir-label">
+    <strong>Direction A — Minimal Clean</strong>
+    Trắng tinh, focus vào kết quả · Nhanh nhất · Google Flights inspired
+  </div>
+
+  <div class="header">
+    <span class="logo">🚌 BusHop</span>
+    <span class="lang">VI | JP | EN</span>
+  </div>
+
+  <div class="search-box">
+    <div class="search-row">
+      <input class="search-input" type="text" placeholder="🔍 Đi từ đâu? (vd: Tokyo)" value="Nagoya">
+      <input class="search-input" type="text" placeholder="📍 Đến đâu? (vd: Osaka)" value="Tokyo">
+      <input class="search-input" type="date" value="2026-05-03">
+      <button class="search-btn">Tìm vé →</button>
+    </div>
+  </div>
+
+  <div class="sort-bar">
+    <button class="sort-btn active">Rẻ nhất</button>
+    <button class="sort-btn">Nhanh nhất</button>
+    <button class="sort-btn">Balanced</button>
+  </div>
+
+  <div class="timestamp">Cập nhật lúc 14:30 · <a href="#" style="color:#1E3A5F">Xem giá mới nhất →</a></div>
+
+  <div class="card">
+    <div class="card-top">
+      <div>
+        <div class="route">23:00 → 06:30</div>
+        <div class="card-mid">🚌 Willer Express &nbsp;·&nbsp; 7.5 tiếng &nbsp;·&nbsp; Ghế nằm &nbsp;·&nbsp; 8 ghế</div>
+      </div>
+      <div>
+        <span class="badge">Rẻ nhất</span>
+        <div class="price">¥1,800</div>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường bến xe</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div>
+        <div class="route">22:30 → 05:45</div>
+        <div class="card-mid">🚌 Kosoku Bus &nbsp;·&nbsp; 7.25 tiếng &nbsp;·&nbsp; Ghế ngồi &nbsp;·&nbsp; 12 ghế</div>
+      </div>
+      <div>
+        <div class="price">¥2,200</div>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường bến xe</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div>
+        <div class="route">00:15 → 07:00</div>
+        <div class="card-mid">🚌 Willer Express &nbsp;·&nbsp; 6.75 tiếng &nbsp;·&nbsp; Ghế nằm &nbsp;·&nbsp; 4 ghế</div>
+      </div>
+      <div>
+        <div class="price">¥2,500</div>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường bến xe</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIRECTION B ===== -->
+<div class="direction dir-b" id="dir-b">
+  <div class="dir-label">
+    <strong>Direction B — Card Heavy</strong>
+    Header xanh đậm · Border accent · Nhiều thông tin hơn trên 1 card
+  </div>
+
+  <div class="header">
+    <span class="logo">🚌 BusHop</span>
+    <span class="lang">VI · JP · EN</span>
+  </div>
+
+  <div class="search-box">
+    <input class="search-input" type="text" placeholder="Đi từ đâu?" value="Nagoya">
+    <input class="search-input" type="text" placeholder="Đến đâu?" value="Tokyo">
+    <div class="search-row">
+      <input class="search-date" type="date" value="2026-05-03">
+      <button class="search-btn">Tìm vé</button>
+    </div>
+  </div>
+
+  <div class="results-header">
+    <span>3 chuyến · Nagoya → Tokyo</span>
+    <span style="color:#94A3B8">Cập nhật 14:30</span>
+  </div>
+
+  <div class="sort-pills">
+    <button class="pill active">Rẻ nhất</button>
+    <button class="pill">Nhanh nhất</button>
+    <button class="pill">Balanced</button>
+  </div>
+
+  <div class="card cheapest">
+    <span class="badge-cheap">RẺ NHẤT</span>
+    <div class="operator">Willer Express</div>
+    <div class="card-top">
+      <div class="route">23:00 → 06:30 <span style="font-size:13px;color:#64748B;font-weight:400">(7.5h)</span></div>
+      <div class="price">¥<span style="font-size:28px">1,800</span></div>
+    </div>
+    <div class="card-meta">🛏 Ghế nằm &nbsp;·&nbsp; 8 ghế còn &nbsp;·&nbsp; Nagoya Sakura-dori</div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="operator">Kosoku Bus</div>
+    <div class="card-top">
+      <div class="route">22:30 → 05:45 <span style="font-size:13px;color:#64748B;font-weight:400">(7.25h)</span></div>
+      <div class="price">¥<span style="font-size:28px">2,200</span></div>
+    </div>
+    <div class="card-meta">💺 Ghế ngồi &nbsp;·&nbsp; 12 ghế còn &nbsp;·&nbsp; Nagoya Eki</div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="operator">Willer Express</div>
+    <div class="card-top">
+      <div class="route">00:15 → 07:00 <span style="font-size:13px;color:#64748B;font-weight:400">(6.75h)</span></div>
+      <div class="price">¥<span style="font-size:28px">2,500</span></div>
+    </div>
+    <div class="card-meta">🛏 Ghế nằm &nbsp;·&nbsp; 4 ghế còn &nbsp;·&nbsp; Nagoya Sakura-dori</div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIRECTION C ===== -->
+<div class="direction dir-c" id="dir-c">
+  <div class="dir-label">
+    <strong>Direction C — Fuji Themed</strong>
+    Gradient xanh Phú Sĩ · Hoa anh đào accent · Ấn tượng nhất
+  </div>
+
+  <div class="header">
+    <div style="overflow:hidden">
+      <div class="logo">🚌 BusHop <span class="logo-sub">バスホップ</span></div>
+      <div class="tagline">Tìm vé xe bus rẻ nhất tại Nhật 🌸</div>
+    </div>
+    <div class="lang-switch">VI | JP | EN</div>
+  </div>
+
+  <div class="search-float">
+    <div class="search-label">Điểm đi</div>
+    <input class="search-input" type="text" placeholder="Tìm tỉnh/thành phố..." value="Nagoya">
+    <div class="search-label">Điểm đến</div>
+    <input class="search-input" type="text" placeholder="Tìm tỉnh/thành phố..." value="Tokyo">
+    <div class="search-row">
+      <input class="search-date" type="date" value="2026-05-03">
+      <button class="search-btn">🔍 Tìm vé</button>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <span>3 chuyến · Nagoya → Tokyo</span>
+    <span style="color:#94A3B8;font-weight:400">14:30 · <a href="#" style="color:#D4607A;text-decoration:none">Làm mới</a></span>
+  </div>
+
+  <div class="sort-bar">
+    <button class="sort-btn active">Rẻ nhất</button>
+    <button class="sort-btn">Nhanh nhất</button>
+    <button class="sort-btn">Balanced</button>
+  </div>
+
+  <div class="card">
+    <span class="sakura">🌸</span>
+    <div class="operator">Willer Express</div>
+    <span class="badge">🏆 RẺ NHẤT</span>
+    <div class="card-top">
+      <div class="route">23:00 → 06:30</div>
+      <div class="price-wrap">
+        <div class="price">¥1,800</div>
+        <div class="price-label">7.5 tiếng</div>
+      </div>
+    </div>
+    <div class="card-meta">🛏 Ghế nằm &nbsp;·&nbsp; 8 ghế còn &nbsp;·&nbsp; Sakura-dori</div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường bến</button>
+      <button class="btn-book">Xem giá mới nhất 🌸</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="sakura">🌸</span>
+    <div class="operator">Kosoku Bus</div>
+    <div class="card-top">
+      <div class="route">22:30 → 05:45</div>
+      <div class="price-wrap">
+        <div class="price">¥2,200</div>
+        <div class="price-label">7.25 tiếng</div>
+      </div>
+    </div>
+    <div class="card-meta">💺 Ghế ngồi &nbsp;·&nbsp; 12 ghế còn &nbsp;·&nbsp; Nagoya Eki</div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường bến</button>
+      <button class="btn-book">Xem giá mới nhất 🌸</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="sakura">🌸</span>
+    <div class="operator">Willer Express</div>
+    <div class="card-top">
+      <div class="route">00:15 → 07:00</div>
+      <div class="price-wrap">
+        <div class="price">¥2,500</div>
+        <div class="price-label">6.75 tiếng</div>
+      </div>
+    </div>
+    <div class="card-meta">🛏 Ghế nằm &nbsp;·&nbsp; 4 ghế còn &nbsp;·&nbsp; Sakura-dori</div>
+    <div class="card-actions">
+      <button class="btn-map">📍 Chỉ đường bến</button>
+      <button class="btn-book">Xem giá mới nhất 🌸</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIRECTION D ===== -->
+<div class="direction dir-d" id="dir-d">
+  <div class="dir-label">
+    <strong>Direction D — App Bottom Nav</strong>
+    Search nằm trong header xanh · Bottom navigation bar · Cảm giác native app
+  </div>
+
+  <div class="header">
+    <span class="logo">🚌 BusHop</span>
+    <span class="lang">VI | JP | EN</span>
+  </div>
+
+  <div class="search-box">
+    <div class="search-label">Điểm đi / Điểm đến</div>
+    <div class="search-row-top">
+      <input class="search-input" type="text" placeholder="Đi từ đâu?" value="Nagoya">
+      <button class="swap-btn">⇄</button>
+      <input class="search-input" type="text" placeholder="Đến đâu?" value="Tokyo">
+    </div>
+    <div class="search-row-bot">
+      <input class="search-date" type="date" value="2026-05-03">
+      <button class="search-btn">Tìm vé →</button>
+    </div>
+  </div>
+
+  <div class="results-bar">
+    <span class="results-count">3 chuyến · Nagoya → Tokyo · <span style="color:#94A3B8">14:30</span></span>
+    <div class="sort-tabs">
+      <button class="sort-tab active">Rẻ nhất</button>
+      <button class="sort-tab">Nhanh nhất</button>
+      <button class="sort-tab">Balanced</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row1">
+      <div>
+        <div class="times">23:00 → 06:30</div>
+        <div class="duration">7.5 tiếng · Willer Express</div>
+      </div>
+      <div style="text-align:right">
+        <span class="badge">Rẻ nhất</span><br>
+        <span class="price">¥1,800</span>
+      </div>
+    </div>
+    <div class="card-row2">
+      <span>🛏 Ghế nằm · 8 ghế còn</span>
+      <span style="color:#94A3B8">Nagoya Sakura-dori</span>
+    </div>
+    <div class="card-btns">
+      <button class="btn-map">📍 Chỉ đường bến xe</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row1">
+      <div>
+        <div class="times">22:30 → 05:45</div>
+        <div class="duration">7.25 tiếng · Kosoku Bus</div>
+      </div>
+      <div style="text-align:right">
+        <span class="price">¥2,200</span>
+      </div>
+    </div>
+    <div class="card-row2">
+      <span>💺 Ghế ngồi · 12 ghế còn</span>
+      <span style="color:#94A3B8">Nagoya Eki</span>
+    </div>
+    <div class="card-btns">
+      <button class="btn-map">📍 Chỉ đường bến xe</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row1">
+      <div>
+        <div class="times">00:15 → 07:00</div>
+        <div class="duration">6.75 tiếng · Willer Express</div>
+      </div>
+      <div style="text-align:right">
+        <span class="price">¥2,500</span>
+      </div>
+    </div>
+    <div class="card-row2">
+      <span>🛏 Ghế nằm · 4 ghế còn</span>
+      <span style="color:#94A3B8">Nagoya Sakura-dori</span>
+    </div>
+    <div class="card-btns">
+      <button class="btn-map">📍 Chỉ đường bến xe</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <span class="nav-icon">🔍</span>
+      <span>Tìm vé</span>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">🕐</span>
+      <span>Gần đây</span>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">❤️</span>
+      <span>Yêu thích</span>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">ℹ️</span>
+      <span>Hướng dẫn</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIRECTION E ===== -->
+<div class="direction dir-e" id="dir-e">
+  <div class="dir-label">
+    <strong>Direction E — Dark Mode Premium</strong>
+    Nền tối xanh đêm · Blue accent · Dành cho người dùng thức khuya đi bus đêm
+  </div>
+
+  <div class="header">
+    <span class="logo">🚌 BusHop</span>
+    <span class="lang">VI | JP | EN</span>
+  </div>
+
+  <div class="search-box">
+    <input class="search-input" type="text" placeholder="🔍 Đi từ đâu? (vd: Tokyo)" value="Nagoya">
+    <input class="search-input" type="text" placeholder="📍 Đến đâu? (vd: Osaka)" value="Tokyo">
+    <div class="search-row">
+      <input class="search-date" type="date" value="2026-05-03">
+      <button class="search-btn">Tìm vé →</button>
+    </div>
+  </div>
+
+  <div class="sort-bar">
+    <button class="sort-chip active">Rẻ nhất</button>
+    <button class="sort-chip">Nhanh nhất</button>
+    <button class="sort-chip">Balanced</button>
+  </div>
+
+  <div class="timestamp">⏱ Cập nhật lúc 14:30 · <a href="#" style="color:#3B7FFF;text-decoration:none">Xem giá mới nhất →</a></div>
+
+  <div class="card top">
+    <div class="operator">Willer Express</div>
+    <span class="badge">RẺ NHẤT</span>
+    <div class="card-top">
+      <div class="route">23:00 → 06:30</div>
+      <div class="price">¥1,800</div>
+    </div>
+    <div class="card-meta">🛏 Ghế nằm &nbsp;·&nbsp; 8 ghế còn &nbsp;·&nbsp; 7.5 tiếng</div>
+    <div class="card-btns">
+      <button class="btn-map">📍 Chỉ đường bến</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="operator">Kosoku Bus</div>
+    <div class="card-top">
+      <div class="route">22:30 → 05:45</div>
+      <div class="price">¥2,200</div>
+    </div>
+    <div class="card-meta">💺 Ghế ngồi &nbsp;·&nbsp; 12 ghế còn &nbsp;·&nbsp; 7.25 tiếng</div>
+    <div class="card-btns">
+      <button class="btn-map">📍 Chỉ đường bến</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="operator">Willer Express</div>
+    <div class="card-top">
+      <div class="route">00:15 → 07:00</div>
+      <div class="price">¥2,500</div>
+    </div>
+    <div class="card-meta">🛏 Ghế nằm &nbsp;·&nbsp; 4 ghế còn &nbsp;·&nbsp; 6.75 tiếng</div>
+    <div class="card-btns">
+      <button class="btn-map">📍 Chỉ đường bến</button>
+      <button class="btn-book">Xem giá mới nhất →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIRECTION F ===== -->
+<div class="direction dir-f" id="dir-f">
+  <div class="dir-label">
+    <strong>Direction F — Compact List</strong>
+    Dense information · Table-like rows · Thấy nhiều kết quả nhất · booking.com style
+  </div>
+
+  <div class="header">
+    <span class="logo">🚌 BusHop</span>
+    <span class="lang">VI | JP | EN</span>
+  </div>
+
+  <div class="search-box">
+    <input class="search-input" type="text" placeholder="Đi từ?" value="Nagoya" style="max-width:120px">
+    <span class="search-sep">→</span>
+    <input class="search-input" type="text" placeholder="Đến?" value="Tokyo" style="max-width:120px">
+    <input class="search-date" type="date" value="2026-05-03">
+    <button class="search-btn">Tìm</button>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Sắp xếp:</span>
+    <button class="filter-chip active">Rẻ nhất</button>
+    <button class="filter-chip">Nhanh nhất</button>
+    <button class="filter-chip">Balanced</button>
+    <span class="spacer">Cập nhật 14:30</span>
+  </div>
+
+  <div class="list-header">
+    <span>GIỜ ĐI / ĐẾN</span>
+    <span style="margin-left:auto;margin-right:60px">NHÀ XE / BẾN</span>
+    <span style="margin-right:36px">GHẾ</span>
+    <span>GIÁ</span>
+  </div>
+
+  <div class="row cheapest" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'flex' ? 'none' : 'flex'">
+    <div class="col-time">
+      <div class="time-main">23:00 → 06:30</div>
+      <div class="time-dur">7h30 · Ghế nằm</div>
+    </div>
+    <div class="col-op">
+      <div class="op-name">Willer Express</div>
+      <div class="op-meta">Nagoya Sakura-dori</div>
+    </div>
+    <div class="col-seats">
+      <div class="seats-num">8</div>
+      <div class="seats-label">ghế còn</div>
+    </div>
+    <div class="col-price">
+      <div class="price">¥1,800</div>
+      <div class="badge">RẺ NHẤT</div>
+    </div>
+    <div class="col-action"><span class="arrow">›</span></div>
+  </div>
+  <div class="row-detail" style="display:none">
+    <button class="btn-map">📍 Chỉ đường bến xe</button>
+    <button class="btn-book">Xem giá mới nhất →</button>
+  </div>
+
+  <div class="row" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'flex' ? 'none' : 'flex'">
+    <div class="col-time">
+      <div class="time-main">22:30 → 05:45</div>
+      <div class="time-dur">7h15 · Ghế ngồi</div>
+    </div>
+    <div class="col-op">
+      <div class="op-name">Kosoku Bus</div>
+      <div class="op-meta">Nagoya Eki Higashi</div>
+    </div>
+    <div class="col-seats">
+      <div class="seats-num">12</div>
+      <div class="seats-label">ghế còn</div>
+    </div>
+    <div class="col-price">
+      <div class="price">¥2,200</div>
+    </div>
+    <div class="col-action"><span class="arrow">›</span></div>
+  </div>
+  <div class="row-detail" style="display:none">
+    <button class="btn-map">📍 Chỉ đường bến xe</button>
+    <button class="btn-book">Xem giá mới nhất →</button>
+  </div>
+
+  <div class="row" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'flex' ? 'none' : 'flex'">
+    <div class="col-time">
+      <div class="time-main">00:15 → 07:00</div>
+      <div class="time-dur">6h45 · Ghế nằm</div>
+    </div>
+    <div class="col-op">
+      <div class="op-name">Willer Express</div>
+      <div class="op-meta">Nagoya Sakura-dori</div>
+    </div>
+    <div class="col-seats">
+      <div class="seats-num" style="color:#F57C3A">4</div>
+      <div class="seats-label">ghế còn</div>
+    </div>
+    <div class="col-price">
+      <div class="price">¥2,500</div>
+    </div>
+    <div class="col-action"><span class="arrow">›</span></div>
+  </div>
+  <div class="row-detail" style="display:none">
+    <button class="btn-map">📍 Chỉ đường bến xe</button>
+    <button class="btn-book">Xem giá mới nhất →</button>
+  </div>
+</div>
+
+<script>
+function show(dir, btn) {
+  document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('dir-' + dir).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

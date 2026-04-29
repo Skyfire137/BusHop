@@ -1,0 +1,39 @@
+# ===== Next.js =====
+bushop-src/.next/
+bushop-src/out/
+bushop-src/build/
+bushop-src/coverage/
+bushop-src/node_modules/
+bushop-src/tsconfig.tsbuildinfo
+bushop-src/.env*.local
+bushop-src/.env.local
+bushop-src/.env.development.local
+bushop-src/.env.test.local
+bushop-src/.env.production.local
+
+# ===== FastAPI / Python =====
+bushop-scraper/venv/
+bushop-scraper/__pycache__/
+bushop-scraper/**/__pycache__/
+bushop-scraper/**/*.pyc
+bushop-scraper/**/*.pyo
+bushop-scraper/.env
+bushop-scraper/.env.*
+bushop-scraper/coverage/
+bushop-scraper/.pytest_cache/
+bushop-scraper/**/.pytest_cache/
+bushop-scraper/.ruff_cache/
+
+# ===== Claude Code =====
+.claude/settings.local.json
+
+# ===== OS =====
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# ===== Editor =====
+.vscode/
+.idea/
+*.swp
+*.swo

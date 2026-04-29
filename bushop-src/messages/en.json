@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "BusHop — Compare Japan Bus Tickets",
+    "subtitle": "Find and compare intercity bus prices in Japan"
+  },
+  "common": {
+    "search": "Search",
+    "loading": "Loading..."
+  }
+}
